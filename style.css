@@ -1,22 +1,19 @@
-/* style.css */
-
 body {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
-    background: url("./mario.jpg") no-repeat center center fixed;
+    background: url("./mario.jpg");
     background-size: cover;
-    margin: 0;
-    padding: 0;
 }
 
 #board {
-    width: 80vw; /* Responsive width */
-    height: 80vw; /* Responsive height */
-    max-width: 540px; /* Max width */
-    max-height: 540px; /* Max height */
+    width: 540px;
+    height: 540px;
+    /* background-color: green; */
+
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
+
     background: url("./soil.png");
     background-size: cover;
     border: 3px solid white;
@@ -24,59 +21,31 @@ body {
 }
 
 #board div {
-    width: 33.33%; /* Responsive width for a 3x3 grid */
-    height: 33.33%; /* Responsive height for a 3x3 grid */
+    /* board = 540 x 540, divide into 3x3 tiles --> 180 x 180 per div */
+    width: 180px; 
+    height: 180px;
     background-image: url("./pipe.png");
     background-size: cover;
-    box-sizing: border-box; /* Ensure padding/border is included in width/height */
 }
 
 #board div img {
-    width: 50%; /* Responsive width for images */
-    height: 50%; /* Responsive height for images */
-    object-fit: contain; /* Maintain aspect ratio */
+    /* all img tags inside tiles */
+    width: 100px;
+    height: 100px;
+
     user-select: none;
     -moz-user-select: none;
     -webkit-user-drag: none;
     -webkit-user-select: none;
     -ms-user-select: none;
 }
-
-#restartButton {
-    width: 150px; /* Responsive width */
-    height: 40px; /* Responsive height */
+#restartButton{
+    width: 200px;
+    height: 50px;
     background-color: red;
     color: white;
     margin-top: 30px;
     border: none;
-    border-radius: 25px; /* Adjusted to match button size */
-    font-size: 16px; /* Responsive font size */
-    cursor: pointer; /* Pointer cursor for button */
-}
+    border-radius: 30px;
 
-/* Responsive Design for Smaller Screens */
-@media (max-width: 600px) {
-    #board {
-        width: 90vw;
-        height: 90vw;
-    }
-
-    #restartButton {
-        width: 120px;
-        height: 35px;
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 400px) {
-    #board {
-        width: 95vw;
-        height: 95vw;
-    }
-
-    #restartButton {
-        width: 100px;
-        height: 30px;
-        font-size: 12px;
-    }
 }
