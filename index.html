@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whack a Mole</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Whack a Mole</h1>
+    <h3 id="score">0</h3>
+    <div id="board"></div>
+    <button id="restartButton">Restart</button> <!-- Added Restart Button -->
+    <script>
+        let currMoleTile;
+        let currPlantTile;
+        let score = 0;
+        let gameOver = false;
+        let moleInterval;
+        let plantInterval;
+
+        window.onload = function() {
+            setGame();
+            document.getElementById("restartButton").addEventListener("click", restartGame); // Add event listener for restart button
+        }
+
+        function setGame() {
+            //set up the grid in html
+            for (let i = 0; i < 9; i++) { // i goes from 0 to 8, stops at 9
+                //<div id="0-8"></div>
+                let tile = document.createElement("div");
+                tile.id = i.toString();
+                tile.addEventListener("click", selectTile);
+                document.getElementById("board").appendChild(tile);
+            }
+
+            // Set intervals
+            moleInterval = setInterval(setMole, 1000); // 1000 milliseconds = 1 second
+            plantInterval = setInterval(setPlant, 1500); // 1500 milliseconds = 1.5 seconds
+        }
+
+        function getRandomTile() {
+            // Math.random --> 0-1 --> (0-1) * 9 = (0-9) --> round down to (0-8) integers
+            let num = Math.floor(Math.random() * 9);
+            return num.toString();
+        }
+
+        function setMole() {
+            if (gameOver) {
+                return;
+            }
+            // Remove mole if it was previously set
+            if (currMoleTile) {
+                currMoleTile.innerHTML = "";
+            }
+
+            // Set a new mole
+            let mole = document.createElement("img");
+            mole.src = "./monty-mole.png";
+            let num = getRandomTile();
+            if (currPlantTile && currPlantTile.id === num) {
+                // If the current plant tile is the same as the new mole tile, skip setting mole
+                return;
+            }
+            currMoleTile = document.getElementById(num);
+            currMoleTile.appendChild(mole);
+        }
+
+        function setPlant() {
+            if (gameOver) {
+                return;
+            }
+            // Remove plant if it was previously set
+            if (currPlantTile) {
+                currPlantTile.innerHTML = "";
+            }
+
+            // Set a new plant
+            let plant = document.createElement("img");
+            plant.src = "./piranha-plant.png";
+            let num = getRandomTile();
+            if (currMoleTile && currMoleTile.id === num) {
+                // If the current mole tile is the same as the new plant tile, skip setting plant
+                return;
+            }
+            currPlantTile = document.getElementById(num);
+            currPlantTile.appendChild(plant);
+        }
+
+        function selectTile() {
+            if (gameOver) {
+                return;
+            }
+            if (this === currMoleTile) {
+                score += 10;
+                document.getElementById("score").innerText = score.toString(); // Update score html
+                currMoleTile.innerHTML = ""; // Clear the mole after being whacked
+                currMoleTile = null; // Clear the reference to the current mole tile
+            } else if (this === currPlantTile) {
+                document.getElementById("score").innerText = "GAME OVER: " + score.toString(); // Update score html
+                gameOver = true;
+                clearInterval(moleInterval); // Clear intervals on game over
+                clearInterval(plantInterval);
+            }
+        }
+
+        function restartGame() {
+            // Reset game state
+            currMoleTile = null;
+            currPlantTile = null;
+            score = 0;
+            gameOver = false;
+            document.getElementById("score").innerText = score.toString();
+
+            // Clear the board
+            document.getElementById("board").innerHTML = "";
+
+            // Clear existing intervals and set new ones
+            clearInterval(moleInterval);
+            clearInterval(plantInterval);
+            setGame();
+        }
+    </script>
+    
+</body>
+</html>
